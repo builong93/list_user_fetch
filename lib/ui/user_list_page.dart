@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:list_user_fetch/repository/user_repository.dart';
+import 'package:list_user_fetch/ui/user_detail.dart';
 
 class UserListPage extends StatelessWidget {
   const UserListPage({super.key});
@@ -9,8 +10,17 @@ class UserListPage extends StatelessWidget {
     final userRepository = UserRepository();
     return Scaffold(
         appBar: AppBar(
-          title: Text('Danh sách'),
+          title: Text(
+            'Danh sách'.toUpperCase(),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900),
+          ),
           centerTitle: true,
+          flexibleSpace: FlexibleSpaceBar(
+            background: Image.asset(
+              'assets/3d_rendering_east_asia.jpg',
+              fit: BoxFit.cover,
+            ),
+          ),
         ),
         body: FutureBuilder(
             future: userRepository.getAllUsers(),
@@ -29,9 +39,12 @@ class UserListPage extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final user = users[index];
                         return ListTile(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => UserDetail(user: user)));
+                          },
                           title: Text(user.name),
-                          subtitle: Text(user.email),
+                          subtitle: Text('${user.email} - ${user.address.street}'),
                         );
                       });
                 } else {
